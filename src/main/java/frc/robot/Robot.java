@@ -8,21 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.subsystems.DiffSwerveModule;
+import frc.subsystems.DiffSwerveModule.ModuleID;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  /**
-   * This function is run when the robot is first started up and should be used
-   * for any initialization code.
-   */
+
+  DiffSwerveModule frontRight;
+
   @Override
   public void robotInit() {
+    frontRight = new DiffSwerveModule(ModuleID.FR);
   }
 
   @Override
@@ -35,10 +31,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    
   }
 
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Motor2Pos", frontRight.getMotor2Pos());
   }
 
   @Override
@@ -47,6 +45,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    frontRight.process();
   }
 
 }
