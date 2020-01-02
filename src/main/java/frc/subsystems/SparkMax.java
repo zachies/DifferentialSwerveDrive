@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SparkMax extends CANSparkMax {
     private String name;
 
-    private CANPIDController pidController;
-    private CANEncoder encoder;
+    public CANPIDController pidController;
+    public CANEncoder encoder;
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 

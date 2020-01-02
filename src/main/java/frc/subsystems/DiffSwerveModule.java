@@ -4,6 +4,11 @@ import frc.maths.MathUtils;
 import frc.maths.Vector2d;
 import static frc.robot.RobotMap.*;
 
+import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController.ArbFFUnits;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * DiffSwerveModule
  */
@@ -93,7 +98,8 @@ public class DiffSwerveModule {
     }
 
     public int getModulePositionTrunc() {
-        return MathUtils.normalizeAngleNative((int)getMotor2Pos(), kSteeringCountsPerRev);
+        return 0;
+        //return MathUtils.normalizeAngleNative((int)getMotor2Pos(), kSteeringCountsPerRev);
     }
 
     public double getModulePositionRad() {
@@ -108,7 +114,22 @@ public class DiffSwerveModule {
     //TODO: can you zero the encoders? Is it even necessary?
 
     public void setPositionAndSpeedNative(double drive, int target) {
-        int diff = MathUtils.normalizeAngleNative(target - (int)getMotor2Pos(), kSteeringCountsPerRev);
-        double setpoint = getMotor2Pos() + diff;
+        //int diff = MathUtils.normalizeAngleNative(target - (int)getMotor2Pos(), kSteeringCountsPerRev);
+        //double setpoint = getMotor2Pos() + diff;
+
+        
+    }
+
+    public void setReference() {
+        double ff = SmartDashboard.getNumber("arbFeedForward", 0);
+        double motor1setPoint = SmartDashboard.getNumber("FR_MOTOR_1 Set Velocity", 0);
+        motor1.pidController.setReference(100, ControlType.kVelocity, 0, ff, ArbFFUnits.kPercentOut);
+        //motor2.pidController.setReference(motor1setPoint, ControlType.kSmartVelocity, 0);
+        //motor1.pidController.setReference(motor1setPoint, ControlType.kSmartMotion);
+    }
+
+    public void updateTelemetry() {
+        //motor1.processTelemetry();
+        //motor2.processTelemetry();
     }
 }

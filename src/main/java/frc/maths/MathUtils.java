@@ -80,14 +80,14 @@ public class MathUtils {
 
     /**
      * Normalizes an amount of encoder ticks such that it is between 
-     * {@code -ticksPerRev/2} and {@code -ticksPerRev/2}.
+     * {@code -ticksPerRev/2} and {@code ticksPerRev/2}.
      * @param ticks Encoder count to adjust in native ticks.
      * @param ticksPerRev Number of native encoder ticks per revolution.
      * @return Adjusted amount of ticks.
      */
     //TODO: Actually test this function. It probably works though?
-    public static int normalizeAngleNative(int ticks, int ticksPerRev) {
-        int scaled = (ticks + ticksPerRev / 2) % (ticksPerRev);
+    public static double normalizeAngleNative(double ticks, double ticksPerRev) {
+        double scaled = (ticks + ticksPerRev / 2) % (ticksPerRev);
         if(scaled < 0)
             scaled += ticksPerRev;
         return scaled - ticksPerRev / 2;
@@ -109,6 +109,7 @@ public class MathUtils {
      * Maps the joystick output so that it is zero if the axis is inside the deadband or
      * between {@code 0..1} if outisde of it. It also adjusts the zero point so that it
      * starts at the edge of the deadband.
+     * Also rotates the resultant angle so that forward has an angle of zero.
      * @param joystick Joystick to read the axis (axes?) from.
      * @param band Deadband of the joystick, where it will assume the joystick is neutral.
      * @param invertY Whether to invert the y axis.
@@ -120,7 +121,7 @@ public class MathUtils {
         int xMultipier  = invertX ? 1 : -1;
         int yMultiplier = invertY ? 1 : -1;
 
-        return adjustDeadband(new Vector2d(joystick.getX() * xMultipier, joystick.getY() *yMultiplier), band);
+        return adjustDeadband(new Vector2d(joystick.getX() * xMultipier, joystick.getY() *yMultiplier).rotate(Math.PI/2), band);
     }
 
     /**
@@ -160,7 +161,7 @@ public class MathUtils {
      * @param d Final high bound.
      * @return Mapped value.
      */
-    private static double map(double input, double a, double b, double c, double d) {
+    public static double map(double input, double a, double b, double c, double d) {
         return ((input - a)*(d-c)/(b-a))+c;
     }
 }
